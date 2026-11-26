@@ -21,8 +21,8 @@
 
   // CSS propio, inyectado una vez.
   const css = `
-  [data-folio~="aparece"],[data-folio~="entrada"]{opacity:0;transform:translateY(14px);
-    transition:opacity .7s cubic-bezier(.2,.6,.2,1),transform .7s cubic-bezier(.2,.6,.2,1);will-change:opacity,transform}
+  [data-folio~="aparece"],[data-folio~="entrada"]{opacity:0;transform:translateY(28px);
+    transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);will-change:opacity,transform}
   [data-folio~="aparece"].folio-on,[data-folio~="entrada"].folio-on{opacity:1;transform:none}
   @media (prefers-reduced-motion: reduce){
     [data-folio~="aparece"],[data-folio~="entrada"]{opacity:1!important;transform:none!important;transition:none!important}
@@ -47,7 +47,7 @@
         const el = e.target;
         const propio = el.dataset.retraso;
         const idx = propio != null ? 0 : [...el.parentElement.children].filter((c) => c.matches('[data-folio~="aparece"]')).indexOf(el);
-        el.style.transitionDelay = (propio != null ? +propio : Math.min(idx, 6) * 70) + "ms";
+        el.style.transitionDelay = (propio != null ? +propio : Math.min(idx, 8) * 130) + "ms";
         el.classList.add("folio-on");
         io.unobserve(el);
       });
@@ -60,7 +60,7 @@
     const items = [...document.querySelectorAll('[data-folio~="entrada"]')];
     if (reduce) { items.forEach((e) => e.classList.add("folio-on")); return; }
     items.forEach((el, i) => {
-      el.style.transitionDelay = (80 + i * 90) + "ms";
+      el.style.transitionDelay = (80 + i * 110) + "ms";
       requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("folio-on")));
     });
   }
