@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Núcleo — el motor de datos que vive en tu app</title>
+<meta name="description" content="Núcleo guarda, busca y sincroniza los datos de tu app sin servidor. Rápido, local primero, tuyo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fondo:#0C0C0B; --tinta:#F5F4EF; --pizarra:#9A9890; --borde:#242320;
+  --acento:#E8B15D; --verde:#9FC2A8; --panel:#141413;
+  --serif:"Source Serif 4",Georgia,serif; --sans:"Inter Tight",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; --curva:cubic-bezier(.2,.6,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--fondo);color:var(--tinta);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.env{max-width:1160px;margin:0 auto;padding:0 32px}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-height:1.05}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--acento)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--fondo) 80%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--borde)}
+.nav .env{display:flex;align-items:center;justify-content:space-between;height:66px}
+.marca{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;font-size:20px}
+.marca .pt{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--acento),#C98A2E);display:inline-block}
+.nav-enlaces{display:flex;gap:26px;align-items:center;font-size:15px;color:var(--pizarra)}
+.nav-enlaces a:hover{color:var(--tinta)}
+.boton{display:inline-flex;align-items:center;height:42px;padding:0 20px;border-radius:10px;font-size:15px;font-weight:600;transition:all .2s var(--curva)}
+.boton.primario{background:var(--tinta);color:#0C0C0B}
+.boton.primario:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(245,244,239,.3)}
+.boton.linea{border:1px solid var(--borde);color:var(--tinta)}
+.boton.linea:hover{border-color:var(--pizarra)}
+@media(max-width:640px){.nav-enlaces a:not(.boton){display:none}}
+
+/* hero */
+.hero{position:relative;padding:130px 0 90px;text-align:center}
+.resplandor{position:absolute;inset:-20% 0 auto 0;height:720px;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 60% at 50% 0%,rgba(232,177,93,.18),transparent 70%),radial-gradient(40% 50% at 70% 20%,rgba(159,194,168,.12),transparent 70%);
+  filter:blur(10px)}
+.hero .env{position:relative;z-index:1}
+.hero h1{font-size:clamp(2.8rem,7vw,5.6rem);font-weight:700;max-width:16ch;margin:22px auto 26px}
+.hero .sub{font-size:clamp(1.1rem,2vw,1.4rem);color:var(--pizarra);max-width:52ch;margin:0 auto 34px}
+.hero .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero .nota{font-family:var(--mono);font-size:13px;color:var(--pizarra);margin-top:22px}
+
+/* ventana mockup */
+.mockup{position:relative;z-index:1;max-width:920px;margin:64px auto 0;border:1px solid var(--borde);border-radius:16px;overflow:hidden;background:var(--panel);
+  box-shadow:0 40px 120px -40px rgba(0,0,0,.8),0 0 0 1px rgba(232,177,93,.06)}
+.mockup .barra{display:flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-bottom:1px solid var(--borde);background:#0F0F0E}
+.mockup .barra i{width:11px;height:11px;border-radius:50%;background:#2A2A27}
+.mockup .barra span{margin-left:12px;font-family:var(--mono);font-size:12px;color:var(--pizarra)}
+.mockup pre{margin:0;padding:26px 28px;font-family:var(--mono);font-size:14px;line-height:1.9;text-align:left;overflow-x:auto}
+.c-key{color:var(--acento)} .c-str{color:var(--verde)} .c-com{color:#8C8B83} .c-fn{color:#C7D2E8}
+
+/* confianza */
+.confia{padding:56px 0;border-top:1px solid var(--borde);text-align:center}
+.confia p{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--pizarra);margin-bottom:26px}
+.confia .fila{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;font-family:var(--serif);font-size:22px;color:var(--pizarra);opacity:.8}
+
+/* features · tarjetas con luz, tamaños distintos */
+.features{padding:100px 0;border-top:1px solid var(--borde)}
+.features .cab{max-width:30ch;margin-bottom:48px}
+.features h2{font-size:clamp(2rem,3.5vw,3rem);margin-bottom:16px}
+.features .cab p{color:var(--pizarra)}
+.rej{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+.card{position:relative;border:1px solid var(--borde);border-radius:16px;padding:30px;background:
+  radial-gradient(120% 120% at 0% 0%,rgba(232,177,93,.06),transparent 55%),var(--panel);overflow:hidden}
+.card h3{font-size:1.4rem;margin-bottom:10px}
+.card p{color:var(--pizarra);font-size:15.5px;max-width:42ch}
+.card .grande{font-family:var(--serif);font-size:clamp(2.4rem,4vw,3.6rem);font-weight:600;color:var(--acento);line-height:1;margin-bottom:8px}
+.card.alta{grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between}
+.diag{margin-top:24px}
+@media(max-width:820px){.rej{grid-template-columns:1fr}.card.alta{grid-row:auto}}
+
+/* números */
+.cifras{padding:90px 0;border-top:1px solid var(--borde)}
+.cifras .rej{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.cifras .n{font-family:var(--serif);font-size:clamp(2.6rem,5vw,4rem);font-weight:600;letter-spacing:-.03em}
+.cifras .n b{color:var(--acento);font-weight:600}
+.cifras .e{color:var(--pizarra);margin-top:6px}
+@media(max-width:700px){.cifras .rej{grid-template-columns:1fr;gap:28px;text-align:center}}
+
+/* declaración */
+.decl{padding:120px 0;border-top:1px solid var(--borde);text-align:center}
+.decl p{font-family:var(--serif);font-weight:500;font-size:clamp(1.7rem,3.6vw,2.9rem);line-height:1.22;letter-spacing:-.02em;max-width:22ch;margin:0 auto}
+.decl .cta{margin-top:36px}
+
+/* pie */
+.pie{border-top:1px solid var(--borde);padding:48px 0;color:var(--pizarra);font-size:14px}
+.pie .env{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.pie a:hover{color:var(--tinta)}
+
+.aparece{opacity:0;transform:translateY(10px);transition:opacity .7s var(--curva),transform .7s var(--curva)}
+.aparece.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.aparece{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="env">
+    <span class="marca"><span class="pt"></span>Núcleo</span>
+    <nav class="nav-enlaces">
+      <a href="#features">Qué hace</a>
+      <a href="#cifras">Velocidad</a>
+      <a href="#">Docs</a>
+      <a href="#" class="boton primario">Empezar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="resplandor" aria-hidden="true"></div>
+    <div class="env">
+      <span class="eyebrow">Base de datos · local primero</span>
+      <h1>El motor de datos que vive dentro de tu app.</h1>
+      <p class="sub">Núcleo guarda, busca y sincroniza los datos de tu aplicación sin montar un servidor. Funciona sin conexión y vuela.</p>
+      <div class="cta">
+        <a href="#" class="boton primario">Empezar gratis</a>
+        <a href="#features" class="boton linea">Ver cómo funciona →</a>
+      </div>
+      <p class="nota">npm i nucleo · 240 KB · sin dependencias</p>
+
+      <div class="mockup" aria-hidden="true">
+        <div class="barra"><i></i><i></i><i></i><span>app.ts</span></div>
+<pre><span class="c-com">// abre tu base de datos local</span>
+<span class="c-key">const</span> db = <span class="c-fn">nucleo</span>(<span class="c-str">"mi-app"</span>)
+
+<span class="c-com">// guarda sin esquemas ni migraciones</span>
+<span class="c-key">await</span> db.<span class="c-fn">guarda</span>({ nota: <span class="c-str">"las ideas se enlazan solas"</span> })
+
+<span class="c-com">// busca por significado, no solo por texto</span>
+<span class="c-key">const</span> cerca = <span class="c-key">await</span> db.<span class="c-fn">similares</span>(<span class="c-str">"cómo cambia una creencia"</span>)
+<span class="c-com">// → 3 resultados en 0.4 ms</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="confia">
+    <div class="env">
+      <p>En producción en equipos que no piden permiso</p>
+      <div class="fila"><span>Hilo</span><span>Marea</span><span>Pauta</span><span>Taller</span><span>Cauce</span></div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="env">
+      <div class="cab">
+        <span class="eyebrow">Qué hace</span>
+        <h2>Datos de verdad, sin la infraestructura.</h2>
+        <p>Todo lo que una base de datos necesita, dentro de tu app, sin servidores que mantener.</p>
+      </div>
+      <div class="rej">
+        <div class="card alta aparece">
+          <div>
+            <h3>Búsqueda por significado</h3>
+            <p>Encuentra lo que quieres decir, no solo las palabras exactas. Núcleo entiende el sentido y trae lo cercano, aunque esté escrito distinto.</p>
+          </div>
+          <svg class="diag" viewBox="0 0 320 150" width="100%" aria-hidden="true">
+            <g fill="none" stroke="#2A2A27" stroke-width="1.5">
+              <line x1="60" y1="75" x2="160" y2="40"/><line x1="60" y1="75" x2="160" y2="75"/><line x1="60" y1="75" x2="160" y2="110"/>
+              <line x1="160" y1="40" x2="260" y2="55"/><line x1="160" y1="110" x2="260" y2="100"/>
+            </g>
+            <g>
+              <circle cx="60" cy="75" r="9" fill="#E8B15D"/>
+              <circle cx="160" cy="40" r="6" fill="#9FC2A8"/><circle cx="160" cy="75" r="6" fill="#9FC2A8"/><circle cx="160" cy="110" r="6" fill="#9FC2A8"/>
+              <circle cx="260" cy="55" r="5" fill="#4A4A45"/><circle cx="260" cy="100" r="5" fill="#4A4A45"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card aparece"><div class="grande">0.4<span style="font-size:.5em">ms</span></div><h3>Rápido de verdad</h3><p>Consultas locales en microsegundos. Sin viajes a la red, sin esperas.</p></div>
+        <div class="card aparece"><h3>Local primero</h3><p>Los datos viven en el equipo. Funciona sin conexión y sincroniza cuando vuelve.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cifras" id="cifras">
+    <div class="env">
+      <div class="rej">
+        <div class="aparece"><div class="n"><b>240</b> KB</div><div class="e">Pesa menos que una foto. Cero dependencias.</div></div>
+        <div class="aparece"><div class="n"><b>12M</b></div><div class="e">Registros buscados por segundo en un portátil.</div></div>
+        <div class="aparece"><div class="n"><b>0</b></div><div class="e">Servidores que montar, pagar o mantener.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="decl">
+    <div class="env">
+      <p>La mejor infraestructura es la que no tienes que pensar.</p>
+      <div class="cta"><a href="#" class="boton primario">Empezar gratis</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="env">
+    <span class="marca" style="font-size:16px"><span class="pt"></span>Núcleo</span>
+    <span><a href="#">Documentación</a> &nbsp;·&nbsp; <a href="#">GitHub</a> &nbsp;·&nbsp; <a href="#">Cambios</a></span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.aparece').forEach((el,i)=>{el.style.transitionDelay=(i%3*60)+'ms';io.observe(el)});
+</script>
+</body>
+</html>

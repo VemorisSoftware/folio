@@ -21,9 +21,17 @@ un navegador de verdad** hasta que quede bien. Funciona con HTML puro, React,
 Vue, Svelte o Astro: Folio trata del diseño, no del framework.
 
 <div align="center">
-<img src="assets/ejemplo-escritorio.png" alt="Página de ejemplo hecha con Folio, dirección monolito" width="100%">
-<br>
-<em>Ejemplo hecho con Folio (dirección «monolito», tipo «producto»). Pasa la revisión en 4 anchos.</em>
+
+<img src="assets/ejemplo-oscuro.png" alt="Landing oscura de producto hecha con Folio" width="100%">
+
+<em>Producto / tech: hero oscuro, titular serif enorme, mockup con luz, diagrama y cifras.</em>
+
+<br><br>
+
+<img src="assets/ejemplo-escritorio.png" alt="Landing editorial clara hecha con Folio" width="100%">
+
+<em>Editorial sereno: la misma skill, otra voz. Las dos pasan la revisión en 4 anchos.</em>
+
 </div>
 
 ## Instalar
