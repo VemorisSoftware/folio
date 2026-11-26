@@ -112,9 +112,21 @@
   // ── Scroll suave (opcional, tipo Lenis pero propio y mínimo) ──────────────
   function scrollSuave() {
     if (reduce) return;
+    // No lo hagas en pantallas táctiles (el scroll nativo del dedo ya es suave).
+    if (matchMedia("(pointer: coarse)").matches) return;
     document.documentElement.classList.add("folio-suave");
     let objetivo = scrollY, actual = scrollY, corriendo = false;
     const lerp = 0.12;
+    // Deja el scroll nativo cuando la rueda cae dentro de un panel propio
+    // (overflow auto/scroll que aún puede desplazarse): menús, modales, etc.
+    function enScrollable(el) {
+      while (el && el !== document.body && el !== document.documentElement) {
+        const s = getComputedStyle(el);
+        if (/(auto|scroll)/.test(s.overflowY) && el.scrollHeight > el.clientHeight + 2) return true;
+        el = el.parentElement;
+      }
+      return false;
+    }
     function loop() {
       actual += (objetivo - actual) * lerp;
       if (Math.abs(objetivo - actual) < 0.5) { actual = objetivo; corriendo = false; }
@@ -122,10 +134,14 @@
       window.scrollTo(0, actual);
     }
     addEventListener("wheel", (e) => {
+      if (e.ctrlKey || enScrollable(e.target)) return; // zoom o panel con scroll propio
       e.preventDefault();
-      objetivo = Math.max(0, Math.min(objetivo + e.deltaY, document.body.scrollHeight - innerHeight));
+      const tope = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+      objetivo = Math.max(0, Math.min(objetivo + e.deltaY, tope));
       if (!corriendo) { corriendo = true; actual = scrollY; requestAnimationFrame(loop); }
     }, { passive: false });
+    // Si algo cambia el scroll por otra vía (anclas, teclado), resincroniza.
+    addEventListener("keydown", () => { objetivo = scrollY; });
   }
 
   const API = {
