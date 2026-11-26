@@ -10,6 +10,7 @@
  *   data-folio="aparece"          aparece al entrar en la vista (fade + subida)
  *   data-folio="entrada"          aparece al cargar (para el héroe)
  *   data-folio="parallax" data-velocidad="0.2"   se mueve despacio al hacer scroll
+ *   data-folio="inclina"         empieza volcada en 3D y se endereza al entrar (scrubbed)
  *   data-folio="contador" data-fin="12000" data-sufijo="M"   cuenta hacia arriba
  *   data-retraso="120"            retrasa su aparición (ms); si no, se escalona solo
  *
@@ -24,8 +25,10 @@
   [data-folio~="aparece"],[data-folio~="entrada"]{opacity:0;transform:translateY(28px);
     transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);will-change:opacity,transform}
   [data-folio~="aparece"].folio-on,[data-folio~="entrada"].folio-on{opacity:1;transform:none}
+  [data-folio~="inclina"]{opacity:0;transform-origin:center top;will-change:transform,opacity;
+    transform:perspective(1500px) rotateX(18deg) scale(.93) translateY(40px)}
   @media (prefers-reduced-motion: reduce){
-    [data-folio~="aparece"],[data-folio~="entrada"]{opacity:1!important;transform:none!important;transition:none!important}
+    [data-folio~="aparece"],[data-folio~="entrada"],[data-folio~="inclina"]{opacity:1!important;transform:none!important;transition:none!important}
     html.folio-suave{scroll-behavior:auto!important}
   }`;
   const estilo = document.createElement("style");
@@ -65,22 +68,39 @@
     });
   }
 
-  // ── Parallax sutil ───────────────────────────────────────────────────────
-  function parallax() {
-    const items = [...document.querySelectorAll('[data-folio~="parallax"]')];
-    if (reduce || items.length === 0) return;
+  // ── Movimiento ligado al scroll: parallax + inclinación 3D ────────────────
+  function scrollLigado() {
+    const para = [...document.querySelectorAll('[data-folio~="parallax"]')];
+    const incl = [...document.querySelectorAll('[data-folio~="inclina"]')];
+    if (reduce || (para.length === 0 && incl.length === 0)) return;
     let activo = false;
     function pintar() {
       activo = false;
       const vh = innerHeight;
-      for (const el of items) {
+      // Parallax: el elemento deriva despacio respecto al scroll.
+      for (const el of para) {
         const r = el.getBoundingClientRect();
         const centro = r.top + r.height / 2 - vh / 2;
         const v = parseFloat(el.dataset.velocidad || "0.15");
         el.style.transform = `translate3d(0, ${(-centro * v).toFixed(1)}px, 0)`;
       }
+      // Inclinación: empieza volcada en 3D y se endereza al entrar (scrubbed).
+      for (const el of incl) {
+        const r = el.getBoundingClientRect();
+        const inicio = vh * 0.96, fin = vh * 0.34;   // de 0 a 1 en esta banda
+        let p = (inicio - r.top) / (inicio - fin);
+        p = Math.max(0, Math.min(1, p));
+        const e = 1 - Math.pow(1 - p, 3);             // easeOutCubic
+        const rot = (1 - e) * 18;                     // 18° -> 0°
+        const sc = 0.93 + e * 0.07;                   // 0.93 -> 1
+        const ty = (1 - e) * 40;                      // sube 40px -> 0
+        el.style.transform = `perspective(1500px) rotateX(${rot.toFixed(2)}deg) scale(${sc.toFixed(3)}) translateY(${ty.toFixed(1)}px)`;
+        el.style.opacity = (0.35 + e * 0.65).toFixed(2);
+      }
     }
-    addEventListener("scroll", () => { if (!activo) { activo = true; requestAnimationFrame(pintar); } }, { passive: true });
+    const pedir = () => { if (!activo) { activo = true; requestAnimationFrame(pintar); } };
+    addEventListener("scroll", pedir, { passive: true });
+    addEventListener("resize", pedir, { passive: true });
     pintar();
   }
 
@@ -147,7 +167,7 @@
   const API = {
     motion(opts = {}) {
       listo(() => {
-        entrada(); apariciones(); parallax(); contadores();
+        entrada(); apariciones(); scrollLigado(); contadores();
         if (opts.scrollSuave) scrollSuave();
       });
       return API;
