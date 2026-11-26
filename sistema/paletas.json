@@ -1,0 +1,24 @@
+{
+  "_nota": "Paletas por tipo de página. Roles: fondo (tranquilo), tinta (texto fuerte), pizarra (secundario), borde (líneas/separadores), acento (usado con avaricia), oscuro (bloques oscuros). Todas pensadas para pasar contraste AA.",
+  "producto": [
+    { "nombre": "Papel y tinta", "fondo": "#FAF9F5", "tinta": "#141413", "pizarra": "#6B6A66", "borde": "#E6E3DC", "acento": "#2A5BD7", "oscuro": "#141413" },
+    { "nombre": "Navy sereno", "fondo": "#FBFBF9", "tinta": "#132941", "pizarra": "#5E646C", "borde": "#E2E0DA", "acento": "#1E6F6A", "oscuro": "#132941" },
+    { "nombre": "Carbón", "fondo": "#0E0E0D", "tinta": "#F5F4EF", "pizarra": "#9A9890", "borde": "#2A2A27", "acento": "#E8B15D", "oscuro": "#0E0E0D" }
+  ],
+  "servicio": [
+    { "nombre": "Arena", "fondo": "#FAF7F2", "tinta": "#26211B", "pizarra": "#6E665B", "borde": "#E8E1D5", "acento": "#B4532A", "oscuro": "#26211B" },
+    { "nombre": "Salvia", "fondo": "#F7F8F4", "tinta": "#1E2A1E", "pizarra": "#5F6B5A", "borde": "#DEE3D6", "acento": "#3E6B46", "oscuro": "#1E2A1E" }
+  ],
+  "lugar": [
+    { "nombre": "Terracota", "fondo": "#FBF6EF", "tinta": "#2A1E16", "pizarra": "#7A6A5A", "borde": "#ECE0D2", "acento": "#C2622E", "oscuro": "#2A1E16" },
+    { "nombre": "Noche cálida", "fondo": "#16120E", "tinta": "#F3EDE3", "pizarra": "#A89A86", "borde": "#2E2820", "acento": "#D99A5B", "oscuro": "#16120E" }
+  ],
+  "editorial": [
+    { "nombre": "Prensa", "fondo": "#FCFBF7", "tinta": "#17150F", "pizarra": "#67635A", "borde": "#E7E3D8", "acento": "#9A2B2B", "oscuro": "#17150F" },
+    { "nombre": "Crema", "fondo": "#F8F5EE", "tinta": "#201C14", "pizarra": "#6B6459", "borde": "#E3DCCB", "acento": "#345E8A", "oscuro": "#201C14" }
+  ],
+  "portafolio": [
+    { "nombre": "Galería clara", "fondo": "#F6F5F2", "tinta": "#1A1A18", "pizarra": "#6A6965", "borde": "#E4E2DC", "acento": "#1A1A18", "oscuro": "#1A1A18" },
+    { "nombre": "Galería oscura", "fondo": "#0F0F0E", "tinta": "#F4F3EF", "pizarra": "#94928A", "borde": "#262522", "acento": "#F4F3EF", "oscuro": "#0F0F0E" }
+  ]
+}

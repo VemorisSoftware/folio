@@ -26,23 +26,41 @@ Tres reglas que nunca se rompen:
 
 ## Cómo trabajar (proceso)
 
-Sigue estos pasos en orden. No saltes al código antes del paso 3.
+Sigue estos pasos en orden. No saltes al código antes del paso 4.
 
-1. **Entiende qué es la página.** ¿Qué es lo único que la persona tiene que
-   entender o hacer aquí? Escríbelo en una frase antes de maquetar.
-2. **Elige UNA dirección de arte** de `direcciones/` según lo que sea la
-   página (cada archivo dice cuándo usarla). No mezcles dos. Si dudas entre
-   dos, es señal de que la página hace dos cosas: sepárala.
-3. **Aplica el sistema** de `sistema/tokens.md`: paleta, escala tipográfica,
-   espaciado y movimiento. Son los materiales; la dirección dice cómo
-   usarlos. Si el proyecto tiene su propia marca, reemplaza los tokens por los
-   de esa marca (ver el final de ese archivo).
+1. **Entiende qué es la página** y clasifícala en un **tipo**: `producto`,
+   `servicio`, `lugar`, `editorial` o `portafolio`. Pregúntate qué es lo único
+   que la persona tiene que entender o hacer aquí.
+2. **Reparte el sistema:** `node scripts/sistema.mjs --tipo <tipo>` te da una
+   paleta y una pareja tipográfica (con sus `<link>` y tokens `:root` listos),
+   evitando repetir las de builds recientes. O usa los tuyos de
+   `sistema/tokens.md` (y, si tienes marca propia, los suyos).
+3. **Elige UNA dirección de arte:** `node scripts/direccion.mjs --tipo <tipo>`
+   reparte una (evitando las últimas), o elige a mano en `direcciones/`. No
+   mezcles dos en el mismo bloque. Si dudas entre dos, la página hace dos cosas:
+   sepárala.
 4. **Construye con contenido real.** Nada de "Lorem ipsum" ni cajas grises que
-   digan "imagen". Si no hay texto, escribe texto de verdad; si no hay imagen,
-   usa una forma, un degradado de la paleta o tipografía grande.
-5. **Revisa contra `revisar/lista.md`** en tres anchos (teléfono ~390px,
-   tablet ~800px, escritorio ~1280px). Arregla primero lo que rompe la
-   jerarquía o el aire. Repite hasta que pase la lista.
+   digan "imagen". Si no hay texto, escribe texto de verdad; para fotos con
+   licencia libre y su crédito, usa `node scripts/fotos.mjs "lo que buscas"`.
+5. **Revisa y cierra:** `node scripts/cierre.mjs <archivo|url>` corre el linter
+   de textos y la revisión en navegador (anchos 1440, 1024, 768, 390) y no deja
+   pasar una FALLA. Arregla primero lo que rompe la jerarquía, el contraste o el
+   móvil, y vuelve a correr (hasta 3 rondas). La lista completa está en
+   `revisar/lista.md`.
+
+## Herramientas (scripts/)
+
+Folio trae herramientas reales que corren con Node 22+ y, para la revisión,
+Chrome/Chromium (sin APIs ni llaves). Un solo comando: `node scripts/folio.mjs <cmd>`.
+
+| Comando | Qué hace |
+|---|---|
+| `folio sistema --tipo <tipo>` | Reparte paleta + tipografía y escribe los `<link>` y tokens `:root`. |
+| `folio direccion --tipo <tipo>` | Reparte una dirección de arte (evita las recientes). |
+| `folio fotos "<búsqueda>"` | Busca imágenes con licencia libre (Openverse) y arma el crédito. |
+| `folio revisar <url\|archivo>` | Abre la página en 4 anchos y revisa desborde, H1, contraste AA, línea, tipografías, alt y toque móvil. |
+| `folio textos <archivo>` | Linter de textos: caza relleno, frases de molde y marcadores. |
+| `folio cierre <url\|archivo>` | La puerta de cierre: textos + revisión. No pasa con FALLAS. Sirve como hook de Stop. |
 
 ## Qué NO hacer (lo que delata una página genérica)
 
@@ -78,3 +96,5 @@ composición tipográfica se ve mejor que una foto de archivo que no dice nada.
 - `direcciones/` — las direcciones de arte (una por archivo) y cuándo usar
   cada una.
 - `revisar/lista.md` — la lista con la que se revisa la página al final.
+- `scripts/` — las herramientas (sistema, dirección, fotos, revisar, textos, cierre).
+- `ejemplos/` — una página de ejemplo hecha con Folio.

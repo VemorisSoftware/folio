@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hilo — las notas se enlazan solas</title>
+<meta name="description" content="Hilo conecta tus notas por lo que dicen, no por dónde las guardaste. Una herramienta de escritura para pensar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fondo:#FBFBF9; --tinta:#132941; --pizarra:#5E646C; --borde:#E2E0DA;
+  --acento:#1E6F6A; --oscuro:#132941;
+  --serif:"Source Serif 4",Georgia,serif; --sans:"Inter Tight",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; --curva:cubic-bezier(.2,.6,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--fondo);color:var(--tinta);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.env{max-width:1120px;margin:0 auto;padding:0 32px}
+.lectura{max-width:680px}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.02em;line-height:1.08}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--fondo) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--borde)}
+.nav .env{display:flex;align-items:center;justify-content:space-between;height:64px}
+.marca{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.02em}
+.nav-enlaces{display:flex;gap:28px;align-items:center;font-size:15px;color:var(--pizarra)}
+.nav-enlaces a:hover{color:var(--tinta)}
+.boton{display:inline-flex;align-items:center;height:42px;padding:0 20px;border-radius:10px;font-size:15px;font-weight:500;transition:background-color .2s var(--curva),transform .2s var(--curva)}
+.boton.primario{background:var(--oscuro);color:var(--fondo)}
+.boton.primario:hover{transform:translateY(-1px)}
+.boton.plano{color:var(--acento)}
+@media(max-width:620px){.nav-enlaces a:not(.boton){display:none}}
+
+/* hero · monolito */
+.hero{padding:120px 0 96px}
+.hero h1{font-size:clamp(2.6rem,6vw,5rem);max-width:12ch;margin-bottom:28px}
+.hero p{font-size:clamp(1.1rem,2vw,1.35rem);color:var(--pizarra);max-width:46ch;margin-bottom:36px}
+.hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.nota{font-family:var(--mono);font-size:13px;color:var(--pizarra);margin-top:22px}
+
+/* dividido */
+.div{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:96px 0;border-top:1px solid var(--borde)}
+.div h2{font-size:clamp(1.8rem,3vw,2.6rem);margin-bottom:18px}
+.div p{color:var(--pizarra);max-width:40ch}
+.lienzo{background:var(--oscuro);border-radius:16px;padding:28px;color:var(--fondo);font-family:var(--mono);font-size:14px;line-height:1.8}
+.lienzo .l{color:#9FC2A8}
+.lienzo .d{color:#B4B3AB}
+@media(max-width:820px){.div{grid-template-columns:1fr;gap:36px;padding:64px 0}}
+
+/* índice de rasgos */
+.rasgos{padding:96px 0;border-top:1px solid var(--borde)}
+.rasgos h2{font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:40px;max-width:16ch}
+.fila{display:grid;grid-template-columns:40px 1fr;gap:20px;padding:26px 0;border-top:1px solid var(--borde)}
+.fila:last-child{border-bottom:1px solid var(--borde)}
+.fila .n{font-family:var(--mono);color:var(--pizarra);font-size:14px;padding-top:4px}
+.fila h3{font-size:1.25rem;margin-bottom:6px}
+.fila p{color:var(--pizarra);max-width:60ch}
+
+/* declaración */
+.decl{background:var(--oscuro);color:var(--fondo);padding:120px 0;margin-top:0}
+.decl p{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,3.5vw,2.8rem);line-height:1.25;letter-spacing:-.02em;max-width:20ch}
+.decl .firma{font-family:var(--sans);font-size:15px;color:#BCC6D1;margin-top:28px}
+
+/* pie */
+.pie{border-top:1px solid var(--borde);padding:48px 0}
+.pie .env{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;color:var(--pizarra);font-size:14px}
+.pie a:hover{color:var(--tinta)}
+
+.aparece{opacity:0;transform:translateY(8px);transition:opacity .6s var(--curva),transform .6s var(--curva)}
+.aparece.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.aparece{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="env">
+    <span class="marca">Hilo</span>
+    <nav class="nav-enlaces">
+      <a href="#como">Cómo funciona</a>
+      <a href="#rasgos">Qué hace</a>
+      <a href="#" class="boton primario">Probar gratis</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="env">
+      <h1>Las notas se enlazan solas.</h1>
+      <p>Hilo conecta lo que escribes por lo que dice, no por dónde lo guardaste. Escribe, y las ideas relacionadas aparecen al lado.</p>
+      <div class="cta">
+        <a href="#" class="boton primario">Probar gratis</a>
+        <a href="#como" class="boton plano">Ver cómo funciona →</a>
+      </div>
+      <p class="nota">brew install hilo · macOS, Linux y Windows</p>
+    </div>
+  </section>
+
+  <section class="div" id="como">
+    <div class="env lectura" style="max-width:none;padding:0 32px">
+      <h2>Escribe. Hilo encuentra el resto.</h2>
+      <p>No hay carpetas que ordenar ni etiquetas que recordar. Mientras escribes, Hilo lee el texto y te muestra las notas que hablan de lo mismo, aunque las hayas escrito hace meses.</p>
+    </div>
+    <div style="padding:0 32px">
+      <div class="lienzo" aria-hidden="true">
+<span class="d"># nota de hoy</span><br>
+La <span class="l">resignificación</span> cambia el marco, no el hecho.<br><br>
+<span class="d">↳ Hilo encontró 3 notas:</span><br>
+&nbsp;&nbsp;· Marcos mentales — hace 2 meses<br>
+&nbsp;&nbsp;· Terapia breve — hace 1 año<br>
+&nbsp;&nbsp;· Cómo cambia una creencia — ayer
+      </div>
+    </div>
+  </section>
+
+  <section class="rasgos" id="rasgos">
+    <div class="env">
+      <h2>Una herramienta para pensar, no para ordenar.</h2>
+      <div class="fila"><div class="n">01</div><div><h3>Enlaces por significado</h3><p>Hilo compara el sentido de tus notas, no solo las palabras iguales. Dos notas que dicen lo mismo con palabras distintas quedan conectadas.</p></div></div>
+      <div class="fila"><div class="n">02</div><div><h3>Todo en tu equipo</h3><p>Tus notas son archivos de texto en tu disco. Hilo trabaja sin conexión y no sube nada a ninguna parte.</p></div></div>
+      <div class="fila"><div class="n">03</div><div><h3>Abre y cierra rápido</h3><p>Pesa menos de 10 MB y arranca al instante. Escribes en segundos, no esperas a que cargue.</p></div></div>
+      <div class="fila"><div class="n">04</div><div><h3>Tuyo para siempre</h3><p>Formato de texto plano y abierto. Si algún día dejas Hilo, tus notas se quedan contigo, legibles en cualquier editor.</p></div></div>
+    </div>
+  </section>
+
+  <section class="decl">
+    <div class="env">
+      <p>Las buenas ideas no llegan ordenadas. Llegan cuando dos cosas que no sabías que estaban conectadas, de pronto lo están.</p>
+      <p class="firma">— El equipo de Hilo</p>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="env">
+    <span>Hilo · hecho con cuidado</span>
+    <span><a href="#">Descargar</a> &nbsp;·&nbsp; <a href="#">Documentación</a> &nbsp;·&nbsp; <a href="#">Código</a></span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('section > .env, .fila').forEach((el,i)=>{el.classList.add('aparece');el.style.transitionDelay=(i%4*40)+'ms';io.observe(el)});
+</script>
+</body>
+</html>

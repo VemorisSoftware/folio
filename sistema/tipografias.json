@@ -1,0 +1,25 @@
+{
+  "_nota": "Parejas tipográficas por tipo de página: una serif de display con carácter y una sans limpia para texto e interfaz. Todas son de Google Fonts (libres). 'mono' solo donde hace falta código/datos.",
+  "producto": [
+    { "display": "Source Serif 4", "texto": "Inter Tight", "mono": "JetBrains Mono" },
+    { "display": "Fraunces", "texto": "Inter", "mono": "JetBrains Mono" },
+    { "display": "Newsreader", "texto": "IBM Plex Sans", "mono": "IBM Plex Mono" }
+  ],
+  "servicio": [
+    { "display": "Fraunces", "texto": "Inter Tight" },
+    { "display": "Libre Caslon Display", "texto": "Work Sans" }
+  ],
+  "lugar": [
+    { "display": "Playfair Display", "texto": "Nunito Sans" },
+    { "display": "Cormorant Garamond", "texto": "Mulish" }
+  ],
+  "editorial": [
+    { "display": "Newsreader", "texto": "Inter" },
+    { "display": "Source Serif 4", "texto": "IBM Plex Sans" },
+    { "display": "Lora", "texto": "Work Sans" }
+  ],
+  "portafolio": [
+    { "display": "Instrument Serif", "texto": "Inter Tight" },
+    { "display": "Fraunces", "texto": "Space Grotesk" }
+  ]
+}
