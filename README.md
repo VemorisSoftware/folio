@@ -92,7 +92,7 @@ Scripts de verdad (Node + Chrome, sin APIs). Un comando: `node scripts/folio.mjs
 | `textos <archivo>` | Linter: caza «Lorem ipsum», frases de molde y marcadores. |
 | `cierre <url\|archivo>` | La puerta de cierre: textos + revisión. No pasa con FALLAS. Hook de Stop. |
 | `direcciones/` | Las 14 direcciones de arte, una por archivo, con cuándo y cómo usarlas. |
-| `assets/folio-motion.js` | Movimiento sin librerías: entrada, apariciones, parallax, contadores y scroll suave. |
+| `assets/folio-motion.js` | Movimiento sin librerías: entrada, apariciones, parallax, contadores, inclinación 3D, titulares palabra por palabra, SVG que se dibujan, deriva continua, indicador de scroll y scroll suave. |
 
 Primera vez en tu proyecto: `node scripts/sistema.mjs --tipo producto` para repartir paleta y tipografía.
 

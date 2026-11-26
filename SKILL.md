@@ -90,6 +90,22 @@ marcas con data-atributos:
   hermanos; `data-retraso="120"` para forzar un retraso en ms).
 - `data-folio="parallax" data-velocidad="0.15"` — se mueve despacio al hacer scroll.
 - `data-folio="contador" data-fin="12000" data-sufijo="M"` — cuenta hacia arriba.
+- `data-folio="inclina"` — empieza volcada en 3D y se endereza al entrar (para
+  mockups y capturas grandes).
+- `data-folio="palabras"` — el titular entra palabra por palabra, subiendo y de
+  desenfocado a nítido (60 ms entre palabras). Úsalo en un solo titular por página.
+- `data-folio="trazo"` — los trazos de un SVG se dibujan al entrar en la vista
+  (`data-duracion="1600"` en ms). Para diagramas e ilustraciones de línea.
+- `data-folio="deriva"` — movimiento continuo y muy leve, solo para decorativos
+  (collage, formas, puntos), nunca para texto. `data-eje="x"`, `"y"`, `"zoom"`,
+  `"giro"` o combinados; `data-amplitud="8"` (px) y `data-ciclo="9"` (s). Se
+  pausa fuera de la vista y se suma a `parallax` sin pisarlo.
+- `data-folio="cuenta-cue"` — indicador de scroll que late; se desvanece al bajar.
+
+Folio carga con `defer`, así que el navegador puede pintar antes de que llegue
+su CSS. Para que nada parpadee, deja el estado inicial en tu hoja de estilos:
+`html.js [data-folio~="aparece"]:not(.folio-on), html.js [data-folio~="entrada"]:not(.folio-on) { opacity: 0 }`
+(y agrega la clase `js` a `<html>` desde el `<head>`).
 
 Para scroll suave (tipo mantequilla), llama `Folio.motion({ scrollSuave: true })`.
 Todo se apaga solo con `prefers-reduced-motion`. Copia `folio-motion.js` a tu
