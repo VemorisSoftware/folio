@@ -1,5 +1,10 @@
 # Cambios
 
+## 0.3.0
+
+- **Movimiento propio (`assets/folio-motion.js`)**, sin librerías: apariciones al bajar con escalonado, entrada del héroe, parallax sutil, contadores y scroll suave opcional. El mismo "feel" de las buenas webs (scroll suave + reveals), pero ligero y con `prefers-reduced-motion`.
+- **Ejemplo de producto oscuro** (hero dramático, mockup con luz, diagrama y cifras animadas) y showcase en el README.
+
 ## 0.2.0
 
 Folio deja de ser solo un criterio escrito y gana herramientas reales.

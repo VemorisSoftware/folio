@@ -95,9 +95,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-he
 .pie .env{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .pie a:hover{color:var(--tinta)}
 
-.aparece{opacity:0;transform:translateY(10px);transition:opacity .7s var(--curva),transform .7s var(--curva)}
-.aparece.on{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.aparece{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -115,18 +113,18 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-he
 
 <main>
   <section class="hero">
-    <div class="resplandor" aria-hidden="true"></div>
+    <div class="resplandor" aria-hidden="true" data-folio="parallax" data-velocidad="0.06"></div>
     <div class="env">
-      <span class="eyebrow">Base de datos · local primero</span>
-      <h1>El motor de datos que vive dentro de tu app.</h1>
-      <p class="sub">Núcleo guarda, busca y sincroniza los datos de tu aplicación sin montar un servidor. Funciona sin conexión y vuela.</p>
-      <div class="cta">
+      <span class="eyebrow" data-folio="entrada">Base de datos · local primero</span>
+      <h1 data-folio="entrada">El motor de datos que vive dentro de tu app.</h1>
+      <p class="sub" data-folio="entrada">Núcleo guarda, busca y sincroniza los datos de tu aplicación sin montar un servidor. Funciona sin conexión y vuela.</p>
+      <div class="cta" data-folio="entrada">
         <a href="#" class="boton primario">Empezar gratis</a>
         <a href="#features" class="boton linea">Ver cómo funciona →</a>
       </div>
-      <p class="nota">npm i nucleo · 240 KB · sin dependencias</p>
+      <p class="nota" data-folio="entrada">npm i nucleo · 240 KB · sin dependencias</p>
 
-      <div class="mockup" aria-hidden="true">
+      <div class="mockup" aria-hidden="true" data-folio="entrada">
         <div class="barra"><i></i><i></i><i></i><span>app.ts</span></div>
 <pre><span class="c-com">// abre tu base de datos local</span>
 <span class="c-key">const</span> db = <span class="c-fn">nucleo</span>(<span class="c-str">"mi-app"</span>)
@@ -156,7 +154,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-he
         <p>Todo lo que una base de datos necesita, dentro de tu app, sin servidores que mantener.</p>
       </div>
       <div class="rej">
-        <div class="card alta aparece">
+        <div class="card alta" data-folio="aparece">
           <div>
             <h3>Búsqueda por significado</h3>
             <p>Encuentra lo que quieres decir, no solo las palabras exactas. Núcleo entiende el sentido y trae lo cercano, aunque esté escrito distinto.</p>
@@ -173,8 +171,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-he
             </g>
           </svg>
         </div>
-        <div class="card aparece"><div class="grande">0.4<span style="font-size:.5em">ms</span></div><h3>Rápido de verdad</h3><p>Consultas locales en microsegundos. Sin viajes a la red, sin esperas.</p></div>
-        <div class="card aparece"><h3>Local primero</h3><p>Los datos viven en el equipo. Funciona sin conexión y sincroniza cuando vuelve.</p></div>
+        <div class="card" data-folio="aparece"><div class="grande">0.4<span style="font-size:.5em">ms</span></div><h3>Rápido de verdad</h3><p>Consultas locales en microsegundos. Sin viajes a la red, sin esperas.</p></div>
+        <div class="card" data-folio="aparece"><h3>Local primero</h3><p>Los datos viven en el equipo. Funciona sin conexión y sincroniza cuando vuelve.</p></div>
       </div>
     </div>
   </section>
@@ -182,9 +180,9 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-he
   <section class="cifras" id="cifras">
     <div class="env">
       <div class="rej">
-        <div class="aparece"><div class="n"><b>240</b> KB</div><div class="e">Pesa menos que una foto. Cero dependencias.</div></div>
-        <div class="aparece"><div class="n"><b>12M</b></div><div class="e">Registros buscados por segundo en un portátil.</div></div>
-        <div class="aparece"><div class="n"><b>0</b></div><div class="e">Servidores que montar, pagar o mantener.</div></div>
+        <div data-folio="aparece"><div class="n"><b data-folio="contador" data-fin="240" data-sufijo=" KB">0 KB</b></div><div class="e">Pesa menos que una foto. Cero dependencias.</div></div>
+        <div data-folio="aparece"><div class="n"><b data-folio="contador" data-fin="12" data-sufijo="M">0M</b></div><div class="e">Registros buscados por segundo en un portátil.</div></div>
+        <div data-folio="aparece"><div class="n"><b>0</b></div><div class="e">Servidores que montar, pagar o mantener.</div></div>
       </div>
     </div>
   </section>
@@ -204,9 +202,6 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.025em;line-he
   </div>
 </footer>
 
-<script>
-const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
-document.querySelectorAll('.aparece').forEach((el,i)=>{el.style.transitionDelay=(i%3*60)+'ms';io.observe(el)});
-</script>
+<script src="../assets/folio-motion.js" defer></script>
 </body>
 </html>

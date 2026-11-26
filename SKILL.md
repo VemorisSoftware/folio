@@ -78,9 +78,22 @@ Chrome/Chromium (sin APIs ni llaves). Un solo comando: `node scripts/folio.mjs <
 ## Movimiento
 
 El movimiento en Folio es casi invisible: entra para aclarar, no para lucirse.
-Apariciones suaves al bajar (fade + 8px hacia arriba), transiciones de
-150–250ms con una curva tranquila. Nada rebota, nada gira, nada parpadea.
-Respeta `prefers-reduced-motion`.
+Apariciones suaves al bajar (fade + subida), transiciones tranquilas. Nada
+rebota, nada gira, nada parpadea. Respeta `prefers-reduced-motion`.
+
+Para lograrlo sin pelear con CSS, **usa el módulo propio `assets/folio-motion.js`**
+(sin librerías). Un solo `<script src="folio-motion.js" defer></script>` y luego
+marcas con data-atributos:
+
+- `data-folio="entrada"` — aparece al cargar, escalonado (para el héroe).
+- `data-folio="aparece"` — aparece al entrar en la vista (se escalona solo entre
+  hermanos; `data-retraso="120"` para forzar un retraso en ms).
+- `data-folio="parallax" data-velocidad="0.15"` — se mueve despacio al hacer scroll.
+- `data-folio="contador" data-fin="12000" data-sufijo="M"` — cuenta hacia arriba.
+
+Para scroll suave (tipo mantequilla), llama `Folio.motion({ scrollSuave: true })`.
+Todo se apaga solo con `prefers-reduced-motion`. Copia `folio-motion.js` a tu
+proyecto y enlázalo; es el mismo «feel» de las buenas webs, pero tuyo y ligero.
 
 ## Imágenes
 
